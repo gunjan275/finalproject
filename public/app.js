@@ -188,8 +188,9 @@ async function deleteJournalEntry(id) {
 // Todo Functions
 let editingTodoId = null;
 
-async function addTodo() {
-    const title = document.getElementById('todo-title').value;
+async function addTodo(event) {
+    if (event) event.preventDefault(); // Prevent form submission if called from a form
+    const title = document.getElementById('todo-title').value.trim();
     const dueDate = document.getElementById('todo-due-date').value;
     const importance = document.getElementById('todo-importance').value;
 
@@ -264,18 +265,20 @@ async function loadTodos() {
 
         todos.forEach(todo => {
             const todoElement = document.createElement('div');
-            todoElement.className = `todo-item importance-${todo.importance} ${todo.completed ? 'completed' : ''}`;
+            todoElement.className = `todo-item ${todo.importance}`;
+            if (todo.completed) {
+                todoElement.classList.add('completed');
+            }
             
             const dueDate = todo.dueDate ? new Date(todo.dueDate).toLocaleDateString() : 'No due date';
             
             todoElement.innerHTML = `
-                <input type="checkbox" ${todo.completed ? 'checked' : ''} 
-                    onchange="toggleTodo('${todo._id}', ${!todo.completed})">
-                <div class="todo-info">
-                    <div class="todo-title">${todo.title}</div>
-                    <div class="todo-due-date">Due: ${dueDate}</div>
+                <div class="todo-content">
+                    <input type="checkbox" ${todo.completed ? 'checked' : ''} 
+                           onchange="toggleTodo('${todo._id}', ${!todo.completed})">
+                    <span class="todo-title">${todo.title}</span>
+                    <span class="todo-due-date">Due: ${dueDate}</span>
                 </div>
-                <span class="todo-importance importance-${todo.importance}">${todo.importance}</span>
                 <div class="actions">
                     <button onclick="editTodo('${todo._id}', '${todo.title.replace(/'/g, "\\'")}', '${todo.dueDate || ''}', '${todo.importance}')" class="edit-btn">Edit</button>
                     <button onclick="deleteTodo('${todo._id}')" class="delete-btn">Delete</button>
@@ -297,6 +300,12 @@ async function toggleTodo(id, completed) {
         });
 
         if (response.ok) {
+            editingTodoId = null;
+            document.getElementById('todo-title').value = '';
+            document.getElementById('todo-due-date').value = '';
+            document.getElementById('todo-importance').value = 'low';
+            document.getElementById('save-todo-btn').textContent = 'Add Task';
+            document.getElementById('cancel-todo-edit-btn').style.display = 'none';
             loadTodos();
         } else {
             const data = await response.json();
