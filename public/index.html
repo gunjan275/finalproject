@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Journal App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Auth Container -->
+    <div id="auth-container" class="container">
+        <div class="auth-box">
+            <h2>Welcome to Daily Journal</h2>
+            <div id="login-form">
+                <h3>Login</h3>
+                <input type="text" id="login-username" placeholder="Username">
+                <input type="password" id="login-password" placeholder="Password">
+                <button onclick="login()">Login</button>
+                <p>Don't have an account? <a href="#" onclick="toggleAuth()">Register</a></p>
+            </div>
+            <div id="register-form" style="display: none;">
+                <h3>Register</h3>
+                <input type="text" id="register-username" placeholder="Username">
+                <input type="password" id="register-password" placeholder="Password">
+                <button onclick="register()">Register</button>
+                <p>Already have an account? <a href="#" onclick="toggleAuth()">Login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App Container -->
+    <div id="app-container" class="container" style="display: none;">
+        <header>
+            <h1>Daily Journal</h1>
+            <button onclick="logout()" class="logout-btn">Logout</button>
+        </header>
+
+        <div class="main-content">
+            <!-- Journal Section -->
+            <div class="journal-section">
+                <h2>Journal Entry</h2>
+                <div class="entry-form">
+                    <textarea id="journal-content" placeholder="How was your day?"></textarea>
+                    <select id="journal-mood">
+                        <option value="">Select Mood</option>
+                        <option value="happy">Happy</option>
+                        <option value="sad">Sad</option>
+                        <option value="neutral">Neutral</option>
+                        <option value="excited">Excited</option>
+                    </select>
+                    <select id="journal-category">
+                        <option value="">Select Category</option>
+                        <option value="work">Work</option>
+                        <option value="personal">Personal</option>
+                        <option value="health">Health</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <button onclick="saveJournalEntry()" id="save-journal-btn">Save Entry</button>
+                    <button onclick="cancelEdit()" id="cancel-edit-btn" style="display: none;">Cancel Edit</button>
+                </div>
+                <div id="journal-entries"></div>
+            </div>
+
+            <!-- Todo Section -->
+            <div class="todo-section">
+                <h2>Todo List</h2>
+                <div class="todo-form">
+                    <input type="text" id="todo-title" placeholder="Add new task">
+                    <input type="date" id="todo-due-date">
+                    <select id="todo-importance">
+                        <option value="low">Low Importance</option>
+                        <option value="medium">Medium Importance</option>
+                        <option value="high">High Importance</option>
+                    </select>
+                    <button onclick="addTodo()" id="save-todo-btn">Add Task</button>
+                    <button onclick="cancelTodoEdit()" id="cancel-todo-edit-btn" style="display: none;">Cancel Edit</button>
+                </div>
+                <div id="todo-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html> 
